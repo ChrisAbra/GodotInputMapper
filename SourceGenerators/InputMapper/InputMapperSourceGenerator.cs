@@ -9,7 +9,7 @@ public class InputMapperSourceGenerator : AttributeSourceGenerator<MapToInputAtt
 {
     readonly string _templateResourceName = "GodotInputMapper.InputMapTemplate.sbncs";
 
-    protected override List<Type> MatchingSyntaxNodeTypes => new List<Type>(){
+    protected override List<Type> MatchingSyntaxNodeTypes => new (){
             typeof(VariableDeclaratorSyntax),
             typeof(PropertyDeclarationSyntax),
             typeof(DelegateDeclarationSyntax)

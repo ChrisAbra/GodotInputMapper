@@ -57,7 +57,6 @@ where TAttribute : Attribute
 
         if (cds is null) return null;
 
-
         RelevantSyntax rs = new()
         {
             Class = cds,
