@@ -5,7 +5,7 @@ A source generator based package designed to make nicer C# API for Godot's Input
 Goals:
 - Ergonimc API with sensible defaults
 - Easy support for multiple Players across multiple devices
-- Elimiation/Minimisation of string references and runtime errors
+- Elimination/Minimisation of string references and runtime errors
 
 ⚠️ Work in progress
 

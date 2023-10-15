@@ -8,11 +8,10 @@
     <LangVersion>preview</LangVersion>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
-    <AssemblyName>GodotInputMapper</AssemblyName>
     <RootNamespace>GodotInputMapper</RootNamespace>
 
     <PackageId>GodotInputMapper.SourceGenerator</PackageId>
-    <Version>0.1.2</Version>
+    <Version>0.1.3</Version>
     <Authors>Chris Abraham</Authors>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageReadmeFile>README.md</PackageReadmeFile>
