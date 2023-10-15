@@ -8,19 +8,20 @@ public partial class {{class_name}} : {{base_class_list_text}}
     {{~  if member.type == "Vector2"   ~}} 
     private {{ member.type  }} {{ member.member_name  }}
     {
-        get => Input.GetVector("{{~ member.attribute.action_name  ~}}_-X_" + PlayerNumber,
-        "{{~ member.attribute.action_name  ~}}_+X_" + PlayerNumber,
-        "{{~ member.attribute.action_name  ~}}_-Y_" + PlayerNumber,
-        "{{~ member.attribute.action_name  ~}}_+Y_" + PlayerNumber);
+        get => Input.GetVector(
+        "{{~ member.attribute.action_name  ~}}_-X{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}}, 
+        "{{~ member.attribute.action_name  ~}}_+X{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}}, 
+        "{{~ member.attribute.action_name  ~}}_-Y{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}}, 
+        "{{~ member.attribute.action_name  ~}}_+Y{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}});
     }
     {{~  else if member.type == "bool"   ~}}
     private {{ member.type  }} {{ member.member_name  }} 
     {
-        get => Input.IsActionPressed("{{~ member.attribute.action_name  ~}}_" + PlayerNumber);
+        get => Input.IsActionPressed("{{~ member.attribute.action_name  ~}}{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}});
     }
     {{~  else if member.type == "float"   ~}}
     private {{ member.type  }} {{ member.member_name  }} {
-        get => Input.GetActionStrength("{{~ member.attribute.action_name  ~}}_" + PlayerNumber);
+        get => Input.GetActionStrength("{{~ member.attribute.action_name  ~}}{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}});
     }
     {{~ end  ~}}
 {{~  end   ~}}
@@ -28,7 +29,7 @@ public partial class {{class_name}} : {{base_class_list_text}}
 {{~ if unhandled_input_members.size > 0  ~}} 
     public override partial void _UnhandledInput(InputEvent evt){
         {{~  for member in unhandled_input_members  }}
-            if(evt.IsActionPressed("{{~ member.attribute.action_name  ~}}_" + PlayerNumber)) 
+            if(evt.IsActionPressed("{{~ member.attribute.action_name  ~}}{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}})) 
             {
                 {{~  if member.is_delegate == true  ~}}
                 EmitSignal(SignalName.{{~ member.delegate_event_name  ~}}  {{~ if member.attribute.fire_on_release ~}} ,true{{~ end ~}});
@@ -40,7 +41,7 @@ public partial class {{class_name}} : {{base_class_list_text}}
                 {{~ end  ~}}
             }
             {{~ if member.attribute.fire_on_release ~}}
-            else if(evt.IsActionReleased("{{~ member.attribute.action_name  ~}}_" + PlayerNumber)) 
+            else if(evt.IsActionReleased("{{~ member.attribute.action_name  ~}}{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}})) 
             {
                 {{~ if member.is_delegate == true ~}}
                 EmitSignal(SignalName.{{~ member.delegate_event_name  ~}},false);

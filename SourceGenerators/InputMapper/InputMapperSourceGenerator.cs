@@ -20,7 +20,10 @@ public class InputMapperSourceGenerator : AttributeSourceGenerator<MapToInputAtt
         public string Namespace;
         public string ClassName;
         public List<string> BaseClassList;
-        public string BaseClassListText { get => string.Join(",", BaseClassList); }
+        public readonly string BaseClassListText => string.Join(",", BaseClassList);
+
+        public bool UsePlayerIndex;
+        public string PlayerIndexMemberName;
 
         public record struct Member
         {
@@ -44,7 +47,7 @@ public class InputMapperSourceGenerator : AttributeSourceGenerator<MapToInputAtt
 
         if (relevantSyntaxes.Count() == 0) return;
 
-        var classesToGenerate = MapToModel(relevantSyntaxes);
+        var classesToGenerate = MapToModel(relevantSyntaxes, compilation);
 
         foreach (var classPair in classesToGenerate)
         {
@@ -53,7 +56,7 @@ public class InputMapperSourceGenerator : AttributeSourceGenerator<MapToInputAtt
         }
     }
 
-    protected Dictionary<string, PartialClassModel> MapToModel(ImmutableArray<RelevantSyntax?> relevantSyntaxes)
+    protected Dictionary<string, PartialClassModel> MapToModel(ImmutableArray<RelevantSyntax?> relevantSyntaxes, Compilation compilation)
     {
 
         var classesToGenerate = new Dictionary<string, PartialClassModel>();
@@ -85,6 +88,18 @@ public class InputMapperSourceGenerator : AttributeSourceGenerator<MapToInputAtt
                 };
             }
 
+            foreach (var attributeList in rs.Class.AttributeLists)
+            {
+                foreach (var attribute in SourceGeneratorUtilities.GetAttributes(attributeList, compilation))
+                {
+                    if(attribute.AttributeClass!.ToString() == typeof(InputMapPlayerIndexAttribute).FullName){
+                        InputMapPlayerIndexAttribute playerIndexAttribute = SourceGeneratorUtilities.MapToAttributeType<InputMapPlayerIndexAttribute>(attribute);
+                        model.UsePlayerIndex = true;
+                        model.PlayerIndexMemberName = playerIndexAttribute.PlayerIndexMemberName;
+                    }
+                }
+            }
+
             SourceGeneratorUtilities.logs.Add(model.GetterMembers.Count());
 
             member = rs.Syntax switch
@@ -92,8 +107,7 @@ public class InputMapperSourceGenerator : AttributeSourceGenerator<MapToInputAtt
                 VariableDeclaratorSyntax variable => member with
                 {
                     MemberName = variable.Identifier.ToString(),
-                    #pragma warning disable CS8601
-                    Type = (variable.Parent is VariableDeclarationSyntax vds) ? vds.Type.ToString() : member.Type
+                    Type = (variable.Parent as VariableDeclarationSyntax)!.Type.ToString()
                 },
                 PropertyDeclarationSyntax prop => member with
                 {

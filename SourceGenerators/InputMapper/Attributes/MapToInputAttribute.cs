@@ -1,6 +1,6 @@
 ﻿namespace GodotInputMapper;
 
-[AttributeUsage((AttributeTargets.Delegate | AttributeTargets.Field| AttributeTargets.Property))]
+[AttributeUsage((AttributeTargets.Delegate | AttributeTargets.Property))]
 public class MapToInputAttribute : Attribute
 {
     public enum InputLevel

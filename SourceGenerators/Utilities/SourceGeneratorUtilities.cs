@@ -29,6 +29,31 @@ internal static class SourceGeneratorUtilities
             }
         }
     }
+    internal static IReadOnlyList<AttributeData> GetAttributes(AttributeListSyntax attributes, Compilation compilation)
+    {
+        // Collect pertinent syntax trees from these attributes
+        var acceptedTrees = new HashSet<SyntaxTree>();
+        foreach (var attribute in attributes.Attributes)
+            acceptedTrees.Add(attribute.SyntaxTree);
+
+        var parentSymbol = GetDeclaredSymbol(attributes.Parent!,compilation)!;
+        var parentAttributes = parentSymbol.GetAttributes();
+        var ret = new List<AttributeData>();
+        foreach (var attribute in parentAttributes)
+        {
+            if (acceptedTrees.Contains(attribute.ApplicationSyntaxReference!.SyntaxTree))
+                ret.Add(attribute);
+        }
+
+        return ret;
+    }
+
+
+    internal static ISymbol? GetDeclaredSymbol(SyntaxNode node, Compilation compilation)
+    {
+        var model = compilation.GetSemanticModel(node.SyntaxTree);
+        return model.GetDeclaredSymbol(node);
+    }
 
 
     internal static TAttribute MapToAttributeType<TAttribute>(AttributeData attributeData)
