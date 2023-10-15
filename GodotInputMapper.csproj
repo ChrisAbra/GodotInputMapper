@@ -8,15 +8,23 @@
     <LangVersion>preview</LangVersion>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <PackageScribanIncludeSource>true</PackageScribanIncludeSource>
+    <AssemblyName>GodotInputMapper</AssemblyName>
+    <RootNamespace>GodotInputMapper</RootNamespace>
 
     <PackageId>GodotInputMapper.SourceGenerator</PackageId>
-    <Version>0.1.0</Version>
+    <Version>0.1.2</Version>
     <Authors>Chris Abraham</Authors>
-
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
 
+    <PackageTags>Godot C# SourceGenerator</PackageTags>
+
+    <RepositoryUrl>https://github.com/ChrisAbra/GodotInputMapper.git</RepositoryUrl> 
+    <RepositoryType>git</RepositoryType> 
   </PropertyGroup>
 
+  <!-- Package References -->
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -25,14 +33,21 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Scriban" Version="5.9.0" IncludeAssets="Build" />
-
-
   </ItemGroup>
 
+    <!-- Scriban Settings -->
   <ItemGroup>
     <EmbeddedResource Include="./SourceGenerators/InputMapper/Templates/InputMapTemplate.sbncs">
       <LogicalName>GodotInputMapper.InputMapTemplate.sbncs</LogicalName>
     </EmbeddedResource>
+  </ItemGroup>
+
+  <!-- Package Build Settings -->
+  <ItemGroup>
+    <None Include="./README.md" Pack="true" PackagePath="/"/>
+    <None Include="./LICENSE.txt" Pack="true" PackagePath=""/>
+    <None Include="$(OutputPath)\$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+
   </ItemGroup>
 
 </Project>

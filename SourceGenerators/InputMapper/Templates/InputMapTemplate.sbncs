@@ -11,7 +11,8 @@ public partial class {{class_name}} : {{base_class_list_text}}
         "{{~ member.attribute.action_name  ~}}_-X{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}}, 
         "{{~ member.attribute.action_name  ~}}_+X{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}}, 
         "{{~ member.attribute.action_name  ~}}_-Y{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}}, 
-        "{{~ member.attribute.action_name  ~}}_+Y{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}});
+        "{{~ member.attribute.action_name  ~}}_+Y{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}}
+    );
     {{~  else if member.type == "bool"   ~}}
     private {{ member.type  }} {{ member.member_name  }} => Input.IsActionPressed("{{~ member.attribute.action_name  ~}}{{~ if use_player_index ~}}_" + {{player_index_member_name}}{{else}}"{{end}});
 
